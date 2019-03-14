@@ -1,7 +1,7 @@
 /*
  * Create a list that holds all of your cards
  */
-const iconList = [
+let iconList = [
   'bacon',
   'cheese',
   'bread-slice',
@@ -20,6 +20,9 @@ const iconList = [
   'hotdog'
 ]
 
+let flipped = []
+let cards = []
+
 function removeCards() {
   const cards = document.querySelectorAll('.card')
   for (card of cards) {
@@ -27,17 +30,57 @@ function removeCards() {
   }
 }
 
-removeCards()
-
 function createCards() {
+  iconList = shuffle(iconList)
   for (let i = 0; i < 16; i++) {
     let card = document.createElement('li')
-    card.className = 'card open show'
+    card.className = 'card'
     let icon = document.createElement('i')
-    icon.className = 'fa fa-leaf'
+    icon.className = 'fa fa-' + iconList[i]
+    card.addEventListener('click', () => {
+      openCard(card)
+    })
     card.appendChild(icon)
     let deck = document.querySelector('.deck')
     deck.appendChild(card)
+  }
+  cards = document.querySelectorAll('.cards')
+}
+
+function openCard(card) {
+  if (checkFlipped(flipped)) {
+    card.className = 'card open show'
+    flipped.push(card)
+    checkMatch(flipped)
+    if (!checkFlipped(flipped)) {
+      checkMatch(flipped)
+    }
+  }
+}
+
+function checkFlipped(flipped) {
+  if (flipped.length === 2) {
+    console.log(flipped.length)
+    return false
+  } else {
+    return true
+  }
+}
+
+function checkMatch(currentFlipArray) {
+  let [cardOne, cardTwo] = currentFlipArray
+  iconOne = cardOne.childNodes[0]
+  iconTwo = cardTwo.childNodes[0]
+  if (iconOne.className === iconTwo.className) {
+    console.log('matched')
+    cardOne.className = 'card match'
+    cardTwo.className = 'card match'
+    flipped = []
+  } else {
+    console.log('no match')
+    cardOne.className = 'card'
+    cardTwo.className = 'card'
+    flipped = []
   }
 }
 
