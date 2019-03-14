@@ -1,6 +1,24 @@
 /*
  * Create a list that holds all of your cards
  */
+const iconList = [
+  'bacon',
+  'cheese',
+  'bread-slice',
+  'carrot',
+  'hamburger',
+  'fish',
+  'ice-cream',
+  'hotdog',
+  'bacon',
+  'cheese',
+  'bread-slice',
+  'carrot',
+  'hamburger',
+  'fish',
+  'ice-cream',
+  'hotdog'
+]
 
 function removeCards() {
   const cards = document.querySelectorAll('.card')
