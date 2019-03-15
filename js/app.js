@@ -1,6 +1,3 @@
-/*
- * Create a list that holds all of your cards
- */
 let iconList = [
   'bacon',
   'cheese',
@@ -22,11 +19,52 @@ let iconList = [
 
 let flipped = []
 let cards = []
+let timer = setInterval(timerFunction, 1000)
+let time = 0
+
+let timerSpan = document.querySelector('.timer')
+
+function timerFunction() {
+  time = time + 1
+  timerSpan.innerHTML = time
+}
+
+//redo button
+const redoBtn = document.querySelector('.fa-redo-alt')
+redoBtn.addEventListener('click', () => {
+  redo()
+})
+
+//move tracking
+const movesSpan = document.querySelector('.moves')
+let moves = 0
+
+//star tracking
+let starListItems = document.querySelectorAll('.stars > li')
+let starUl = document.querySelector('.stars')
+
+function removeStar() {
+  starListItems[0].remove()
+  starListItems = document.querySelectorAll('.stars > li')
+}
 
 function removeCards() {
   const cards = document.querySelectorAll('.card')
   for (card of cards) {
     card.parentNode.removeChild(card)
+  }
+}
+function resetStars() {
+  for (let i = 0; i < 3; i++) {
+    let newStarLi = document.createElement('li')
+    let newStarIcon = document.createElement('i')
+    newStarIcon.className = 'fa fa-star'
+    starUl.appendChild(newStarLi)
+    newStarLi.appendChild(newStarIcon)
+  }
+  starListItems = document.querySelectorAll('.stars > li')
+  while (starListItems.length > 3) {
+    removeStar()
   }
 }
 
@@ -48,6 +86,9 @@ function createCards() {
 }
 
 function openCard(card) {
+  moves = moves + 1
+  movesSpan.innerHTML = moves
+  checkStars(moves)
   if (checkFlipped(flipped)) {
     card.className = 'card open show'
     flipped.push(card)
@@ -60,38 +101,40 @@ function openCard(card) {
 
 function checkFlipped(flipped) {
   if (flipped.length === 2) {
-    console.log(flipped.length)
     return false
   } else {
     return true
   }
 }
-
-function checkMatch(currentFlipArray) {
-  let [cardOne, cardTwo] = currentFlipArray
-  iconOne = cardOne.childNodes[0]
-  iconTwo = cardTwo.childNodes[0]
-  if (iconOne.className === iconTwo.className) {
-    console.log('matched')
-    cardOne.className = 'card match'
-    cardTwo.className = 'card match'
-    flipped = []
-  } else {
-    console.log('no match')
-    cardOne.className = 'card'
-    cardTwo.className = 'card'
-    flipped = []
+function checkStars(moves) {
+  if (moves === 10) {
+    removeStar()
+  } else if (moves === 20) {
+    removeStar()
+  } else if (moves === 35) {
+    removeStar()
   }
 }
 
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
+function checkMatch(currentFlipArray) {
+  if (currentFlipArray.length === 2) {
+    let [cardOne, cardTwo] = currentFlipArray
+    iconOne = cardOne.childNodes[0]
+    iconTwo = cardTwo.childNodes[0]
+    if (iconOne.className === iconTwo.className) {
+      console.log('matched')
+      cardOne.className = 'card match'
+      cardTwo.className = 'card match'
+      flipped = []
+    } else {
+      console.log('no match')
+      cardOne.className = 'card'
+      cardTwo.className = 'card'
+      flipped = []
+    }
+  }
+}
 
-// Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
   var currentIndex = array.length,
     temporaryValue,
@@ -107,6 +150,22 @@ function shuffle(array) {
 
   return array
 }
+
+function redo() {
+  removeCards()
+  createCards()
+  resetStars()
+  clearInterval(timer)
+  time = 0
+  timerSpan.innerHTML = time
+  timer = setInterval(timerFunction, 1000)
+  flipped = []
+  moves = 0
+  movesSpan.innerHTML = moves
+}
+
+//create initial game board
+createCards()
 
 /*
  * set up the event listener for a card. If a card is clicked:
