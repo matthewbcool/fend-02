@@ -49,7 +49,7 @@ function removeStar() {
 }
 
 function removeCards() {
-  const cards = document.querySelectorAll('.card')
+  cards = document.querySelectorAll('.card')
   for (card of cards) {
     card.parentNode.removeChild(card)
   }
@@ -86,26 +86,26 @@ function createCards() {
 }
 
 function openCard(card) {
-  moves = moves + 1
-  movesSpan.innerHTML = moves
-  checkStars(moves)
-  if (checkFlipped(flipped)) {
-    card.className = 'card open show'
-    flipped.push(card)
-    checkMatch(flipped)
-    if (!checkFlipped(flipped)) {
-      checkMatch(flipped)
-    }
+  showCard(card)
+  if (flipped[0] !== card && flipped[1] !== card) {
+    pushCardToFlipped(card)
   }
+
+  if (flipped.length === 2) {
+    checkMatch()
+  }
+  addMove()
+  checkStars(moves)
 }
 
-function checkFlipped(flipped) {
-  if (flipped.length === 2) {
-    return false
-  } else {
-    return true
-  }
+function showCard(card) {
+  card.className = 'card open show'
 }
+
+function pushCardToFlipped(card) {
+  flipped.push(card)
+}
+
 function checkStars(moves) {
   if (moves === 10) {
     removeStar()
@@ -115,26 +115,35 @@ function checkStars(moves) {
     removeStar()
   }
 }
+function addMove() {
+  moves = moves + 1
+  movesSpan.innerHTML = moves
+}
 
-function checkMatch(currentFlipArray) {
-  if (currentFlipArray.length === 2) {
-    let [cardOne, cardTwo] = currentFlipArray
-    iconOne = cardOne.childNodes[0]
-    iconTwo = cardTwo.childNodes[0]
-    if (iconOne.className === iconTwo.className) {
-      console.log('matched')
-      cardOne.className = 'card match'
-      cardTwo.className = 'card match'
-      flipped = []
-    } else {
-      console.log('no match')
-      cardOne.className = 'card'
-      cardTwo.className = 'card'
-      flipped = []
-    }
+function checkMatch() {
+  let [cardOne, cardTwo] = flipped
+  let iconOne = cardOne.children[0].className
+  let iconTwo = cardTwo.children[0].className
+  if (iconOne === iconTwo) {
+    console.log('we gotta match')
+    lockCards(cardOne, cardTwo)
+  } else {
+    hideCards(cardOne, cardTwo)
   }
 }
 
+function lockCards(cardOne, cardTwo) {
+  cardOne.className = 'card match'
+  cardTwo.className = 'card match'
+  flipped = []
+}
+function hideCards(cardOne, cardTwo) {
+  flipped = []
+  setTimeout(() => {
+    cardOne.className = 'card'
+    cardTwo.className = 'card'
+  }, 1600)
+}
 function shuffle(array) {
   var currentIndex = array.length,
     temporaryValue,
