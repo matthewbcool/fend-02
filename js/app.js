@@ -75,9 +75,7 @@ function createCards() {
     card.className = 'card'
     let icon = document.createElement('i')
     icon.className = 'fa fa-' + iconList[i]
-    card.addEventListener('click', () => {
-      openCard(card)
-    })
+    card.addEventListener('click', openCard)
     card.appendChild(icon)
     let deck = document.querySelector('.deck')
     deck.appendChild(card)
@@ -85,7 +83,8 @@ function createCards() {
   cards = document.querySelectorAll('.cards')
 }
 
-function openCard(card) {
+function openCard() {
+  let card = this
   showCard(card)
   if (flipped[0] !== card && flipped[1] !== card) {
     pushCardToFlipped(card)
