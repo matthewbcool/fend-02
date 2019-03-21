@@ -69,18 +69,19 @@ function resetStars() {
 }
 
 function createCards() {
+  let deck = document.querySelector('.deck')
   iconList = shuffle(iconList)
   for (let i = 0; i < 16; i++) {
     let card = document.createElement('li')
     card.className = 'card'
     let icon = document.createElement('i')
     icon.className = 'fa fa-' + iconList[i]
-
     card.appendChild(icon)
-
-    let deck = document.querySelector('.deck')
+    // no event listener attached here....
+    card.addEventListener('click', openCard)
     deck.appendChild(card)
   }
+  //try on the deck
   cards = document.querySelectorAll('.cards')
 }
 
@@ -90,7 +91,6 @@ function openCard() {
   if (flipped[0] !== card && flipped[1] !== card) {
     pushCardToFlipped(card)
   }
-
   if (flipped.length === 2) {
     checkMatch()
   }
