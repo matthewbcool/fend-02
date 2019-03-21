@@ -75,8 +75,9 @@ function createCards() {
     card.className = 'card'
     let icon = document.createElement('i')
     icon.className = 'fa fa-' + iconList[i]
-    card.addEventListener('click', openCard)
+
     card.appendChild(icon)
+
     let deck = document.querySelector('.deck')
     deck.appendChild(card)
   }
