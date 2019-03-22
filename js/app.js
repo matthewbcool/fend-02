@@ -77,25 +77,27 @@ function createCards() {
     let icon = document.createElement('i')
     icon.className = 'fa fa-' + iconList[i]
     card.appendChild(icon)
-    // no event listener attached here....
-    card.addEventListener('click', openCard)
+    // attach an event listener here!
+
     deck.appendChild(card)
   }
-  //try on the deck
+  //try a listener on the deck
+
   cards = document.querySelectorAll('.cards')
 }
 
 function openCard() {
-  let card = this
-  showCard(card)
-  if (flipped[0] !== card && flipped[1] !== card) {
-    pushCardToFlipped(card)
-  }
-  if (flipped.length === 2) {
-    checkMatch()
-  }
-  addMove()
-  checkStars(moves)
+  // show off the event object!
+  /* let card = this
+    showCard(card)
+    if (flipped[0] !== card && flipped[1] !== card) {
+      pushCardToFlipped(card)
+    }
+    if (flipped.length === 2) {
+      checkMatch()
+    }
+    addMove()
+    checkStars(moves) */
 }
 
 function showCard(card) {
@@ -142,7 +144,7 @@ function hideCards(cardOne, cardTwo) {
   setTimeout(() => {
     cardOne.className = 'card'
     cardTwo.className = 'card'
-  }, 1600)
+  }, 900)
 }
 function shuffle(array) {
   var currentIndex = array.length,
